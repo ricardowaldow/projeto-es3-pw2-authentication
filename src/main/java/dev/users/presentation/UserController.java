@@ -1,9 +1,9 @@
 package dev.users.presentation;
 
-import dev.users.application.requests.AuthenticateRequest;
-import dev.users.application.requests.CreateUserRequest;
 import dev.users.application.usecase.AuthenticateUseCase;
 import dev.users.application.usecase.CreateUserUseCase;
+import dev.users.domain.dto.requests.AuthenticateRequest;
+import dev.users.domain.dto.requests.CreateUserRequest;
 import dev.users.exceptions.ServiceException;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.smallrye.mutiny.Uni;
@@ -55,21 +55,22 @@ public class UserController {
     @Path("/authenticate")
     @WithSession
     public Uni<Response> authenticate(AuthenticateRequest request) {
-        // try {
+        try {
             return authenticateUseCase.execute(request)
                     .map(response -> Response.status(Status.ACCEPTED).entity(response).build())
-                    .log();
-                    // .onFailure().transform(e -> {
-                    //     String message = e.getMessage();
-                    //     throw new ServiceException(
-                    //             message,
-                    //             Response.Status.BAD_REQUEST);
-                    // });
-        // } catch (Exception e) {
-        //     String message = e.getMessage();
-        //     throw new ServiceException(
-        //             message,
-        //             Response.Status.BAD_REQUEST);
-        // }
+                    .log()
+                    .onFailure().transform(e -> {
+                        String message = e.getMessage();
+                        throw new ServiceException(
+                                message,
+                                Response.Status.BAD_REQUEST);
+                    });
+        } catch (Exception e) {
+            String message = e.getMessage();
+            throw new ServiceException(
+                    message,
+                    Response.Status.BAD_REQUEST);
+        }
     }
+
 }

@@ -1,4 +1,4 @@
-package dev.users.application.requests;
+package dev.users.domain.dto.requests;
 
 import lombok.Getter;
 import lombok.Setter;

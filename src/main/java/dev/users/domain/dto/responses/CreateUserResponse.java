@@ -1,4 +1,4 @@
-package dev.users.application.responses;
+package dev.users.domain.dto.responses;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -6,10 +6,11 @@ import java.util.Optional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.jwt.Claims;
 
-import dev.users.application.requests.AuthenticateRequest;
-import dev.users.application.responses.AuthenticateResponse;
+import dev.users.data.repository.UserRepository;
+import dev.users.domain.dto.requests.AuthenticateRequest;
+import dev.users.domain.dto.responses.AuthenticateResponse;
 import dev.users.domain.models.UserEntity;
-import dev.users.domain.repository.UserRepository;
+import dev.users.utils.JWTGenerator;
 import dev.users.utils.PasswordUtils;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.mutiny.Uni;
@@ -36,7 +37,7 @@ public class AuthenticateUseCase {
         .transformToUni(user -> {
             authenticate(request.getPassword(), user.getPassword());
             AuthenticateResponse response = new AuthenticateResponse();
-            response.setJwt(generateJWT(user));
+            response.setJwt(JWTGenerator.generateJWT(user));
             return Uni.createFrom().item(response);
         });
 
@@ -47,24 +48,6 @@ public class AuthenticateUseCase {
             throw new IllegalArgumentException("Wrong email or password");
         }
         return null;
-    }
-
-    /**
-     * Creates a JWT (JSON Web Token) to a user.
-     *
-     * @param user : The user object
-     *
-     * @return Returns the JWT
-     */
-    private String generateJWT(final UserEntity user) {
-        HashSet<String> groups = new HashSet<>();
-        groups.add("user");
-        return Jwt.issuer("users-pw2")
-            .upn(user.getEmail())
-            .groups(groups)
-            .claim(Claims.c_hash, user.getHash())
-            .claim(Claims.email, user.getEmail())
-            .sign();
     }
 
 }

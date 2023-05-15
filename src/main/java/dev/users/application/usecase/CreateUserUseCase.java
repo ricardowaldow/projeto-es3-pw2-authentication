@@ -1,9 +1,9 @@
 package dev.users.application.usecase;
 
-import dev.users.application.requests.CreateUserRequest;
-import dev.users.application.responses.CreateUserResponse;
+import dev.users.data.repository.UserRepository;
+import dev.users.domain.dto.requests.CreateUserRequest;
+import dev.users.domain.dto.responses.CreateUserResponse;
 import dev.users.domain.models.UserEntity;
-import dev.users.domain.repository.UserRepository;
 import dev.users.utils.PasswordUtils;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;

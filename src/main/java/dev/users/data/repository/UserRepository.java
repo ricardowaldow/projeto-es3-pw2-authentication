@@ -1,4 +1,4 @@
-package dev.users.domain.repository;
+package dev.users.data.repository;
 
 import dev.users.domain.models.UserEntity;
 import io.smallrye.mutiny.Uni;
