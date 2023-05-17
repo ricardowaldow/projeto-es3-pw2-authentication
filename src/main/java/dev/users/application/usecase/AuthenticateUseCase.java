@@ -1,18 +1,14 @@
 package dev.users.application.usecase;
 
-import java.util.HashSet;
 import java.util.Optional;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-import org.eclipse.microprofile.jwt.Claims;
 
 import dev.users.data.repository.UserRepository;
 import dev.users.domain.dto.requests.AuthenticateRequest;
 import dev.users.domain.dto.responses.AuthenticateResponse;
-import dev.users.domain.models.UserEntity;
 import dev.users.utils.JWTGenerator;
 import dev.users.utils.PasswordUtils;
-import io.smallrye.jwt.build.Jwt;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 
