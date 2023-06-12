@@ -1,5 +1,6 @@
 package dev.users.utils;
 
+import java.time.Duration;
 import java.util.HashSet;
 
 import org.eclipse.microprofile.jwt.Claims;
@@ -21,6 +22,7 @@ public class JWTGenerator {
         groups.add("user");
         return Jwt.issuer("users-pw2")
                 .upn(user.getEmail())
+                .expiresIn(Duration.ofDays(365))
                 .groups(groups)
                 .claim(Claims.c_hash, user.getHash())
                 .sign();
