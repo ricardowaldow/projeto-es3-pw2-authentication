@@ -23,4 +23,12 @@ public class UserRepositoryImpl implements UserRepository, PanacheRepository<Use
     public Uni<UserEntity> findByEmail(String email) {
         return find("email", email).firstResult();
     }
+
+    @Override
+    public Uni<UserEntity> checkAndPersist(UserEntity user) {
+        String email = user.getEmail();
+        return find("email", email).firstResult()
+        .onItem().ifNotNull().failWith(new IllegalArgumentException("Email já está em uso"))
+        .onItem().ifNull().switchTo(this.persist(user));
+    }
 }

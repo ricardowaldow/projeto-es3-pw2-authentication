@@ -17,12 +17,17 @@ public class CreateUserUseCase {
     }
 
     public Uni<CreateUserResponse> execute(CreateUserRequest request) {
+        if ((request.getUsername() == null || request.getUsername().isBlank())
+        || (request.getEmail() == null || request.getEmail().isBlank())
+        || (request.getPassword() == null || request.getPassword().isEmpty())) {
+            throw new IllegalArgumentException("Todos os campos devem ser preenchidos");
+        }
         UserEntity user = new UserEntity();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(PasswordUtils.encrypt(request.getPassword()));
 
-        return userRepository.persist(user)
+        return userRepository.checkAndPersist(user)
                 .map(v -> {
                     CreateUserResponse response = new CreateUserResponse();
                     response.setUsername(user.getUsername());

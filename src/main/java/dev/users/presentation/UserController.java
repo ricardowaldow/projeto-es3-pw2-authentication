@@ -35,7 +35,7 @@ public class UserController {
     public Uni<Response> createUser(CreateUserRequest request) {
         try {
             return createUserUseCase.execute(request)
-                    .map(response -> Response.status(Status.CREATED).entity(response).build())
+                    .map(response -> Response.status(Status.OK).entity(response).build())
                     .log()
                     .onFailure().transform(e -> {
                         String message = e.getMessage();
@@ -57,7 +57,7 @@ public class UserController {
     public Uni<Response> authenticate(AuthenticateRequest request) {
         try {
             return authenticateUseCase.execute(request)
-                    .map(response -> Response.status(Status.ACCEPTED).entity(response).build())
+                    .map(response -> Response.status(Status.OK).entity(response).build())
                     .log()
                     .onFailure().transform(e -> {
                         String message = e.getMessage();

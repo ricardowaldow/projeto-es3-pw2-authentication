@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,16 +27,13 @@ public class UserEntity extends PanacheEntityBase {
     private String hash;
 
     /** Username. */
-    @NotNull(message = "Username can't be null")
     private String username;
 
     /** Email. */
-    @NotNull(message = "Email can't be null")
     @Email(message = "Invalid Email")
     private String email;
 
     /** Password. */
-    @NotNull(message = "Password can't be null")
     private String password;
 
     public UserEntity() {
