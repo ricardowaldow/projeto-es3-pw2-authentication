@@ -23,7 +23,7 @@ public class UserEntity extends PanacheEntityBase {
     @JsonIgnore
     private Long id;
 
-    /** User hash */
+    /** User hash. */
     private String hash;
 
     /** Username. */
