@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>dev.users</groupId>
   <artifactId>users</artifactId>
@@ -13,7 +15,6 @@
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <quarkus.platform.version>3.0.3.Final</quarkus.platform.version>
-    <skipITs>true</skipITs>
     <surefire-plugin.version>3.0.0</surefire-plugin.version>
   </properties>
   <dependencyManagement>
@@ -86,6 +87,17 @@
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>4.5.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -132,15 +144,32 @@
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
+            <phase>verify</phase>
             <configuration>
-              <systemPropertyVariables>
-                <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
-                <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                <maven.home>${maven.home}</maven.home>
-              </systemPropertyVariables>
+              <skipTests>false</skipTests>
+              <skipITs>${skipITs}</skipITs>
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>3.3.0</version>
+        <executions>
+          <execution>
+            <id>checkstyle</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <failOnViolation>false</failOnViolation>
+          <violationSeverity>warning</violationSeverity>
+          <maxAllowedViolations>100</maxAllowedViolations>
+          <suppressionsLocation>config/checkstyle-suppressions.xml</suppressionsLocation>
+        </configuration>
       </plugin>
     </plugins>
   </build>

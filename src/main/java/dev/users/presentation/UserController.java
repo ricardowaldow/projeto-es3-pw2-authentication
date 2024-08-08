@@ -1,10 +1,7 @@
 package dev.users.presentation;
 
-import dev.users.application.usecase.AuthenticateUseCase;
-import dev.users.application.usecase.CreateUserUseCase;
-import dev.users.domain.dto.requests.AuthenticateRequest;
-import dev.users.domain.dto.requests.CreateUserRequest;
 import dev.users.exceptions.ServiceException;
+import dev.users.usecase.UserUseCase;
 import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.smallrye.mutiny.Uni;
 import jakarta.inject.Inject;
@@ -18,23 +15,26 @@ import jakarta.ws.rs.core.Response.Status;
 @Consumes(MediaType.APPLICATION_JSON)
 public class UserController {
 
-    private final CreateUserUseCase createUserUseCase;
-    private final AuthenticateUseCase authenticateUseCase;
+    private final UserUseCase uc;
 
     @Inject
     public UserController(
-            CreateUserUseCase createUserUseCase,
-            AuthenticateUseCase authenticateUseCase) {
-        this.createUserUseCase = createUserUseCase;
-        this.authenticateUseCase = authenticateUseCase;
+            UserUseCase uc) {
+        this.uc = uc;
     }
 
     @POST
     @Path("/create")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.APPLICATION_JSON)
     @WithSession
-    public Uni<Response> createUser(CreateUserRequest request) {
+    public Uni<Response> createUser(
+        @FormParam("username") final String username,
+        @FormParam("email") final String email,
+        @FormParam("password") final String password
+    ) {
         try {
-            return createUserUseCase.execute(request)
+            return uc.createUser(username, email, password)
                     .map(response -> Response.status(Status.OK).entity(response).build())
                     .log()
                     .onFailure().transform(e -> {
@@ -53,10 +53,15 @@ public class UserController {
 
     @POST
     @Path("/authenticate")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
     @WithSession
-    public Uni<Response> authenticate(AuthenticateRequest request) {
+    public Uni<Response> authenticate(
+        @FormParam("email") final String email,
+        @FormParam("password") final String password
+    ) {
         try {
-            return authenticateUseCase.execute(request)
+            return uc.authenticateUser(email, password)
                     .map(response -> Response.status(Status.OK).entity(response).build())
                     .log()
                     .onFailure().transform(e -> {
