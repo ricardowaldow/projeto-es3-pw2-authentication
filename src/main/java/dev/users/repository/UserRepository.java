@@ -1,6 +1,6 @@
-package dev.users.data.repository;
+package dev.users.repository;
 
-import dev.users.domain.models.UserEntity;
+import dev.users.models.UserEntity;
 import io.smallrye.mutiny.Uni;
 
 public interface UserRepository {

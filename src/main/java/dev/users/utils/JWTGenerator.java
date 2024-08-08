@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import org.eclipse.microprofile.jwt.Claims;
 
-import dev.users.domain.models.UserEntity;
+import dev.users.models.UserEntity;
 import io.smallrye.jwt.build.Jwt;
 
 public class JWTGenerator {

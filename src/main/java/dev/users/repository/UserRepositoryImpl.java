@@ -1,7 +1,6 @@
-package dev.users.infrastructure;
+package dev.users.repository;
 
-import dev.users.data.repository.UserRepository;
-import dev.users.domain.models.UserEntity;
+import dev.users.models.UserEntity;
 import io.quarkus.hibernate.reactive.panache.PanacheRepository;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;

@@ -1,7 +1,8 @@
-package dev.users.domain.models;
+package dev.users.models;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.quarkus.hibernate.reactive.panache.PanacheEntityBase;
@@ -9,7 +10,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,10 +30,10 @@ public class UserEntity extends PanacheEntityBase {
     private String username;
 
     /** Email. */
-    @Email(message = "Invalid Email")
     private String email;
 
     /** Password. */
+    @JsonBackReference
     private String password;
 
     public UserEntity() {
